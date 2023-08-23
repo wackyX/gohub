@@ -3,6 +3,7 @@ tmp
 gohub
 .DS_Store
 .history
+.xml
 
 # Golang #
 ######################
