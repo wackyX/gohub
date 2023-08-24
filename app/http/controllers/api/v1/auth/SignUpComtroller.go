@@ -1,7 +1,6 @@
 package auth
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	v1 "gohub/app/http/controllers/api/v1"
 	"gohub/app/models/user"
@@ -15,27 +14,28 @@ type SignupController struct {
 
 func (sc *SignupController) IsPhoneExist(c *gin.Context) {
 
+	// 获取请求参数，并做表单验证
 	request := requests.SignupPhoneExistRequest{}
-	err := c.ShouldBindJSON(&request)
-	if err != nil {
-		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, gin.H{
-			"error": err.Error(),
-		})
-		fmt.Println(err.Error())
+	if ok := requests.Validate(c, &request, requests.ValidateSignupPhoneExist); !ok {
 		return
 	}
 
-	errs := requests.ValidateSignupPhoneExist(&request, c)
-
-	if len(errs) > 0 {
-		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, gin.H{
-			"error": errs,
-		})
-		fmt.Println(errs)
-		return
-	}
-
+	//  检查数据库并返回响应
 	c.JSON(http.StatusOK, gin.H{
 		"exist": user.IsPhoneExist(request.Phone),
+	})
+}
+
+func (sc *SignupController) IsEmailExist(c *gin.Context) {
+
+	// 获取请求参数，并做表单验证
+	request := requests.SignupEmailExistRequest{}
+	if ok := requests.Validate(c, &request, requests.ValidateSignupEmailExist); !ok {
+		return
+	}
+
+	//  检查数据库并返回响应
+	c.JSON(http.StatusOK, gin.H{
+		"exist": user.IsPhoneExist(request.Email),
 	})
 }
