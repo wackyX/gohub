@@ -29,7 +29,12 @@ func main() {
 	bootstrap.SetupDB()
 	// 初始化路由绑定
 	bootstrap.SetupRoute(router)
+	config.InitConfig(env)
 
+	// 初始化 Logger
+	bootstrap.SetupLogger()
+
+	// new 一个 Gin Engine 实例
 	// 运行服务
 	err := router.Run(":" + config.Get("app.port"))
 	if err != nil {
