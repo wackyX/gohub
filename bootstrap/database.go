@@ -6,6 +6,7 @@ import (
 	"gohub/app/models/user"
 	"gohub/pkg/config"
 	"gohub/pkg/database"
+	newlog "gohub/pkg/logger"
 	"time"
 
 	"gorm.io/driver/mysql"
@@ -39,7 +40,7 @@ func SetupDB() {
 	default:
 		panic(errors.New("database connection not supported"))
 	}
-
+	database.Connect(dbConfig, newlog.NewGormLogger())
 	// 连接数据库，并设置 GORM 的日志模式
 	database.Connect(dbConfig, logger.Default.LogMode(logger.Info))
 
