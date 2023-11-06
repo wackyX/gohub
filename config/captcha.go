@@ -1,6 +1,6 @@
 package config
 
-import "github.com/onsi/ginkgo/config"
+import "gohub/pkg/config"
 
 func init() {
 	config.Add("captcha", func() map[string]interface{} {
